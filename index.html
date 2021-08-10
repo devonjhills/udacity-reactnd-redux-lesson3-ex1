@@ -103,10 +103,24 @@
         }
       }
 
+      // My custom middleware
+      const todoAlerts = (store) => (next) => (action) => {
+        if(action.type === ADD_GOAL) {
+          alert("That's a great goal!");
+        }
+
+        if(action.type === ADD_TODO) {
+          alert(`Don't forget to ${action.todo.name}`);
+        }
+
+        return next(action);
+      }
+
+      //Add middleware to store declaration
       const store = Redux.createStore(Redux.combineReducers({
         todos,
         goals,
-      }))
+      }), Redux.applyMiddleware(todoAlerts))
 
       store.subscribe(() => {
         const {
